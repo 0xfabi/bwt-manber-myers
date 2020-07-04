@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+from collections import defaultdict
+from typing import List, DefaultDict
+
+class BwtManberMyers():
+
+    def __init__(self, seq: str):
+        """Initialise Burrow Wheeler transformation with suffix array optimisation by Manber Myers algorithm.
+
+        :param seq: input sequence which is used for BWT
+        """
+        self.seq = seq + "$"  # add sentinel letter which is unique and lexicographically smaller than any other character
+        self.suffixes = []  # contains resulting suffix array index positions of sequence symbols
+        self.stage = 1  # number of affected suffix symbols
+
+    def _create_bucket(self, suffix_pos: List, seq:str=None, stage:int=None) -> DefaultDict:
+        """
+        Internal helper function.
+        Create a bucket which contains affected symbols as key and their apperance positions in list as values.
+
+        :param suffix_pos: contains list of positions of affected symbols from concerning stage
+        :param: seq: input sequence
+        :param: stage: number of affected suffix symbols
+        :return: bucket of type DefaultDict
+        """
+        if not seq: seq = self.seq
+        if not stage: stage = self.stage
+        bucket = defaultdict(list)
+        # create buckets where key is number of affected symbols and value contains position of key in sequence
+        for pos in suffix_pos:
+            k = seq[pos:pos + stage]
+            bucket[k].append(pos)
+        return bucket
+
+    def _sort_manber_myers(self, suffix_pos: List) -> List:
+        """
+        Internal helper function.
+        Build suffix array of type list according to Manber Myers algorithm by using buckets for sorting.
+
+        :param suffix_pos: contains list of positions of affected symbols from concerning stage
+        :return: suffix positions of type List.
+        """
+        bucket = self._create_bucket(suffix_pos)
+        for _, v in sorted(bucket.items()):
+            if len(v) > 1:
+                # recursive call for next stage
+                self.stage *= 2
+                self._sort_manber_myers(v)
+            else:
+                # otherwise add starting position of suffix to result
+                self.suffixes.append(v[0])      
+        return self.suffixes
+
+    def _get_manber_myers_suffixes(self, seq:str=None) -> List:
+        """
+        Internal helper function.
+        Recursively call helper function to recieve suffix array of type list according to Manber Myers algorithm by using buckets for sorting.
+
+        :param: seq: input sequence
+        :return: suffix positions of type List.
+        """
+        if not seq: seq = self.seq
+        return self._sort_manber_myers([i for i in range(len(seq))])
+
+    def _get_bwt_seq(self, seq:str=None, suffixes:List=None) -> str:
+        """
+        Internal helper function.
+        Create BWT sequence from given suffix array and input sequence.
+
+        :param: seq: input sequence
+        :param: suffixes: contains resulting suffix array index positions of sequence symbols
+        :return: transformed input sequence using BWT
+        """
+        if not seq: seq = self.seq
+        if not suffixes: suffixes = self.suffixes
+        bwt_seq = ""
+        for i in suffixes:
+            if i > 0:
+                bwt_seq += seq[i-1]
+            else:  # case for added sentinal letter '$'
+                continue 
+        return bwt_seq
+
+    def transform(self) -> str:
+        """
+        Create suffix array for given input sequence and transform it according to BWT.
+
+        :return: transformed input sequence using BWT
+        """
+        self._get_manber_myers_suffixes()
+        return self._get_bwt_seq()
+
+def main ():
+    seq = "banana"
+    bwt = BwtManberMyers(seq)
+    print(bwt.transform())
+
+if __name__ == "__main__":
+    main()
+
+
+
