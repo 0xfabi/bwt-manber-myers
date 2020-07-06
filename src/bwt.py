@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from typing import List, DefaultDict
 
 class BwtManberMyers():
@@ -9,7 +9,7 @@ class BwtManberMyers():
 
         :param seq: input sequence which is used for BWT
         """
-        self.seq = seq + "$"  # add sentinel letter which is unique and lexicographically smaller than any other character
+        self.seq = seq + "$" if not seq[-1:] == "$" else seq # add sentinel letter which is unique and lexicographically smaller than any other character
         self.suffixes = []  # contains resulting suffix array index positions of sequence symbols
         self.stage = 1  # number of affected suffix symbols
 
@@ -48,7 +48,7 @@ class BwtManberMyers():
                 self._sort_manber_myers(v)
             else:
                 # otherwise add starting position of suffix to result
-                self.suffixes.append(v[0])      
+                self.suffixes.append(v[0])            
         return self.suffixes
 
     def _get_manber_myers_suffixes(self, seq:str=None) -> List:
@@ -78,25 +78,52 @@ class BwtManberMyers():
             if i > 0:
                 bwt_seq += seq[i-1]
             else:  # case for added sentinal letter '$'
-                continue 
+                bwt_seq += "$"
         return bwt_seq
 
     def transform(self) -> str:
         """
-        Create suffix array for given input sequence and transform it according to BWT.
+        Create suffix array for given input sequence.
+        It is used to transform input sequence according to BWT.
 
         :return: transformed input sequence using BWT
         """
         self._get_manber_myers_suffixes()
         return self._get_bwt_seq()
 
+    def retransform(self, bwt_seq: str, suffixes: List) -> str:
+        """
+        Retransform from BWT sequence to original sequence by using inplace inserts to retrieve original letter order of a sequence.
+
+        :param bwt_seq: sequence transformed according BWT
+        :param suffixes: corresponding suffix array
+        :return: original sequence
+        """
+        # create empty list with same length as input sequence
+        transformed_seq = [""] * len(bwt_seq)
+        for idx, s in enumerate(suffixes):
+            # rebuild original sequence by inplace inserts
+            if s > 0:
+                transformed_seq[s-1] = bwt_seq[idx]
+            else:
+                transformed_seq[len(bwt_seq) - 1] = bwt_seq[idx]  # sentinel letter
+        # build string from sequence list to restore original sequence
+        return "".join([c for c in transformed_seq])
+
 def main ():
-    seq = "banana"
+    # Example usage
+    seq = "STETSTESTE$"
     bwt = BwtManberMyers(seq)
-    print(bwt.transform())
+
+    print(f"Transforming {seq} using BWT:")
+    transformed_seq = bwt.transform()
+    print(f"Transformed sequence: {transformed_seq}")
+    suffix_array = bwt.suffixes
+    print(f"Corresponding suffix array: {suffix_array}")
+
+    print(f"\nRetransforming {transformed_seq}:")
+    retransformed_seq = bwt.retransform(transformed_seq, suffix_array)
+    print(f"Original sequence: {retransformed_seq}")
 
 if __name__ == "__main__":
     main()
-
-
-
