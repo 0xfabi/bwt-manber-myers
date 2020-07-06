@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 from typing import List, DefaultDict
 
 class BwtManberMyers():
