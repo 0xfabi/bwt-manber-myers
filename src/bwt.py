@@ -75,10 +75,7 @@ class BwtManberMyers():
         if not suffixes: suffixes = self.suffixes
         bwt_seq = ""
         for i in suffixes:
-            if i > 0:
-                bwt_seq += seq[i-1]
-            else:  # case for added sentinal letter '$'
-                bwt_seq += "$"
+            bwt_seq += seq[(i-1 % len(seq))]
         return bwt_seq
 
     def transform(self) -> str:
@@ -103,10 +100,7 @@ class BwtManberMyers():
         transformed_seq = [""] * len(bwt_seq)
         for idx, s in enumerate(suffixes):
             # rebuild original sequence by inplace inserts
-            if s > 0:
-                transformed_seq[s-1] = bwt_seq[idx]
-            else:
-                transformed_seq[len(bwt_seq) - 1] = bwt_seq[idx]  # sentinel letter
+            transformed_seq[(s-1 % len(bwt_seq))] = bwt_seq[idx]
         # build string from sequence list to restore original sequence
         return "".join([c for c in transformed_seq])
 
