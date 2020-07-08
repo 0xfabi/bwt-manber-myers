@@ -15,9 +15,9 @@ pip install -r ./requirements.txt
 ## How to execute
 Execute the script with following command:
 ```shell script
-python3 ./src/bwt.py
+python3 ./src/example.py
 ```
-Change `seq`value in [bwt.py](./src/bwt.py) to execute BWT for another sequence.
+Change `seq`value in [example.py](./src/example.py) to execute BWT for another sequence.
 
 Execute the tests with following command:
 ```shell script
@@ -25,7 +25,7 @@ pytest
 ```
 
 ## Example output
-The sccript [bwt.py](./src/bwt.py) generates following output by default for given sequence `STETSTESTE$`:
+The sccript [example.py](./src/example.py) generates following output by default for given sequence `STETSTESTE$`:
 ```
 Transforming STETSTESTE$ using BWT:
 Transformed sequence: ETTTET$SSSE
