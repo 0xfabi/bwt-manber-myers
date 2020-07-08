@@ -4,7 +4,7 @@ from typing import List, DefaultDict
 
 class BwtManberMyers():
 
-    def __init__(self, seq: str):
+    def __init__(self, seq: str, debug=False):
         """Initialise Burrow Wheeler transformation with suffix array optimisation by Manber Myers algorithm.
 
         :param seq: input sequence which is used for BWT
@@ -12,6 +12,7 @@ class BwtManberMyers():
         self.seq = seq + "$" if not seq[-1:] == "$" else seq # add sentinel letter which is unique and lexicographically smaller than any other character
         self.suffixes = []  # contains resulting suffix array index positions of sequence symbols
         self.stage = 1  # number of affected suffix symbols
+        self.debug = debug  # enable debug mode for additional printing
 
     def _create_bucket(self, suffix_pos: List, seq:str=None, stage:int=None) -> DefaultDict:
         """
@@ -26,10 +27,12 @@ class BwtManberMyers():
         if not seq: seq = self.seq
         if not stage: stage = self.stage
         bucket = defaultdict(list)
+        if self.debug: print(f"_create_bucket function: suffix positions: {suffix_pos}")  
         # create buckets where key is number of affected symbols and value contains position of key in sequence
         for pos in suffix_pos:
             k = seq[pos:pos + stage]
             bucket[k].append(pos)
+        if self.debug: print(f"_create_bucket function: stage: {stage}, bucket: {bucket}\n")    
         return bucket
 
     def _sort_manber_myers(self, suffix_pos: List) -> List:
@@ -42,13 +45,15 @@ class BwtManberMyers():
         """
         bucket = self._create_bucket(suffix_pos)
         for _, v in sorted(bucket.items()):
+            if self.debug: print(f"_sort_manber_myers function: bucket value: {v}")    
             if len(v) > 1:
                 # recursive call for next stage
                 self.stage *= 2
                 self._sort_manber_myers(v)
             else:
                 # otherwise add starting position of suffix to result
-                self.suffixes.append(v[0])            
+                self.suffixes.append(v[0])      
+        if self.debug: print(f"_sort_manber_myers function: suffixes: {self.suffixes}\n")   
         return self.suffixes
 
     def _get_manber_myers_suffixes(self, seq:str=None) -> List:
@@ -74,8 +79,11 @@ class BwtManberMyers():
         if not seq: seq = self.seq
         if not suffixes: suffixes = self.suffixes
         bwt_seq = ""
+        if self.debug: print(f"_get_bwt_seq function: sequence: {seq}, suffixes: {suffixes}")   
         for i in suffixes:
+            if self.debug: print(f"_get_bwt_seq function: suffix: {i}, sequence letter: {seq[(i-1 % len(seq))]}")   
             bwt_seq += seq[(i-1 % len(seq))]
+        if self.debug: print(f"_get_bwt_seq function: bwt sequence: {bwt_seq}\n")     
         return bwt_seq
 
     def transform(self) -> str:
@@ -98,8 +106,11 @@ class BwtManberMyers():
         """
         # create empty list with same length as input sequence
         transformed_seq = [""] * len(bwt_seq)
+        if self.debug: print(f"retransform function: bwt sequence: {bwt_seq}, suffixes: {suffixes}")   
         for idx, s in enumerate(suffixes):
             # rebuild original sequence by inplace inserts
             transformed_seq[(s-1 % len(bwt_seq))] = bwt_seq[idx]
+            if self.debug: print(f"retransform function: step: {idx}, letter: {bwt_seq[idx]}")   
         # build string from sequence list to restore original sequence
+        if self.debug: print(f"retransform function: transformed sequence: {''.join([c for c in transformed_seq])}\n")   
         return "".join([c for c in transformed_seq])

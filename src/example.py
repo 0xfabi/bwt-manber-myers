@@ -5,7 +5,7 @@ from bwt import BwtManberMyers
 def main ():
     # Example usage
     seq = "STETSTESTE$"
-    bwt = BwtManberMyers(seq)
+    bwt = BwtManberMyers(seq, debug=True)
 
     print(f"Transforming {seq} using BWT:")
     transformed_seq = bwt.transform()
