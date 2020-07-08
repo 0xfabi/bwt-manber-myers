@@ -32,7 +32,7 @@ class BwtManberMyers():
         for pos in suffix_pos:
             k = seq[pos:pos + stage]
             bucket[k].append(pos)
-        if self.debug: print(f"_create_bucket function: stage: {stage}, bucket: {bucket}\n")    
+        if self.debug: print(f"_create_bucket function: stage: {stage}, bucket: {bucket.items()}\n")    
         return bucket
 
     def _sort_manber_myers(self, suffix_pos: List) -> List:
