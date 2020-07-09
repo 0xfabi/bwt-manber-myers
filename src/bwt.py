@@ -27,7 +27,6 @@ class BwtManberMyers():
         if not seq: seq = self.seq
         if not stage: stage = self.stage
         bucket = defaultdict(list)
-        if self.debug: print(f"_create_bucket function: suffix positions: {suffix_pos}")  
         # create buckets where key is number of affected symbols and value contains position of key in sequence
         for pos in suffix_pos:
             k = seq[pos:pos + stage]

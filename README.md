@@ -38,12 +38,10 @@ Original sequence: STETSTESTE$
 If you set parameter `debug=True` some additional output for debugging purpose is generated:
 ```
 Transforming STETSTESTE$ using BWT:
-_create_bucket function: suffix positions: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 _create_bucket function: stage: 1, bucket: dict_items([('S', [0, 4, 7]), ('T', [1, 3, 5, 8]), ('E', [2, 6, 9]), ('$', [10])])
 
 _sort_manber_myers function: bucket value: [10]
 _sort_manber_myers function: bucket value: [2, 6, 9]
-_create_bucket function: suffix positions: [2, 6, 9]
 _create_bucket function: stage: 2, bucket: dict_items([('ET', [2]), ('ES', [6]), ('E$', [9])])
 
 _sort_manber_myers function: bucket value: [9]
@@ -52,7 +50,6 @@ _sort_manber_myers function: bucket value: [2]
 _sort_manber_myers function: suffixes: [10, 9, 6, 2]
 
 _sort_manber_myers function: bucket value: [0, 4, 7]
-_create_bucket function: suffix positions: [0, 4, 7]
 _create_bucket function: stage: 4, bucket: dict_items([('STET', [0]), ('STES', [4]), ('STE$', [7])])
 
 _sort_manber_myers function: bucket value: [7]
@@ -61,7 +58,6 @@ _sort_manber_myers function: bucket value: [0]
 _sort_manber_myers function: suffixes: [10, 9, 6, 2, 7, 4, 0]
 
 _sort_manber_myers function: bucket value: [1, 3, 5, 8]
-_create_bucket function: suffix positions: [1, 3, 5, 8]
 _create_bucket function: stage: 8, bucket: dict_items([('TETSTEST', [1]), ('TSTESTE$', [3]), ('TESTE$', [5]), ('TE$', [8])])
 
 _sort_manber_myers function: bucket value: [8]
