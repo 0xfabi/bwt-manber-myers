@@ -1,6 +1,13 @@
 import pytest
 from bwt import BwtManberMyers
 
+def test_validate_input_sequence():
+    bwt = BwtManberMyers("")
+    assert bwt._validate_input_sequence("banana") == "banana$"
+    assert bwt._validate_input_sequence("banana$") == "banana$"
+    with pytest.raises(ValueError, match=r".*$.*"):
+        bwt._validate_input_sequence("ban$ana")
+
 def test_create_bucket():
     seq = "banana"
     bwt = BwtManberMyers(seq)
