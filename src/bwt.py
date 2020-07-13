@@ -7,15 +7,16 @@ class BwtManberMyers():
     def __init__(self, seq: str, debug=False):
         """Initialise Burrow Wheeler transformation with suffix array optimisation by Manber Myers algorithm.
 
+        :param debug: add additional output informations for debugging
         :param seq: input sequence which is used for BWT
         :param suffixes: contains resulting suffix array index positions of sequence symbols
         :param stage: number of affected suffix symbols
-        :param debug: add additional output informations for debugging
         """
+        self.debug = debug
         self.seq = self._validate_input_sequence(seq)
         self.suffixes = []
         self.stage = 1
-        self.debug = debug
+        
 
     def _validate_input_sequence(self, seq:str) -> str:
         """

@@ -25,7 +25,7 @@ pytest
 ```
 
 ## Example output
-The script [example.py](./src/example.py) generates following output by default for given sequence `STETSTESTE$`:
+The script [example.py](./src/example.py) generates following output by default for given sequence `STETSTESTE`:
 ```
 Transforming STETSTESTE$ using BWT:
 Transformed sequence: ETTTET$SSSE
@@ -37,6 +37,7 @@ Original sequence: STETSTESTE$
 
 If you set parameter `debug=True` some additional output for debugging purpose is generated:
 ```
+Sentinal letter is added to input sequence: STETSTESTE$
 Transforming STETSTESTE$ using BWT:
 _create_bucket function: stage: 1, bucket: dict_items([('S', [0, 4, 7]), ('T', [1, 3, 5, 8]), ('E', [2, 6, 9]), ('$', [10])])
 
