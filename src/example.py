@@ -4,10 +4,10 @@ from bwt import BwtManberMyers
 
 def main ():
     # Example usage
-    seq = "STETSTESTE$"
+    seq = "STETSTESTE"
     bwt = BwtManberMyers(seq, debug=True)
 
-    print(f"Transforming {seq} using BWT:")
+    print(f"Transforming {bwt.seq} using BWT:")
     transformed_seq = bwt.transform()
     print(f"Transformed sequence: {transformed_seq}")
     suffix_array = bwt.suffixes

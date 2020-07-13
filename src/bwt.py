@@ -12,8 +12,6 @@ class BwtManberMyers():
         :param stage: number of affected suffix symbols
         :param debug: add additional output informations for debugging
         """
-
-
         self.seq = self._validate_input_sequence(seq)
         self.suffixes = []
         self.stage = 1
