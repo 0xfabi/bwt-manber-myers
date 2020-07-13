@@ -17,7 +17,6 @@ class BwtManberMyers():
         self.suffixes = []
         self.stage = 1
         
-
     def _validate_input_sequence(self, seq:str) -> str:
         """
         Internal helper function.
