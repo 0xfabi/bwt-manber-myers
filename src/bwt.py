@@ -8,11 +8,14 @@ class BwtManberMyers():
         """Initialise Burrow Wheeler transformation with suffix array optimisation by Manber Myers algorithm.
 
         :param seq: input sequence which is used for BWT
+        :param suffixes: contains resulting suffix array index positions of sequence symbols
+        :param stage: number of affected suffix symbols
+        :param debug: add additional output informations for debugging
         """
         self.seq = seq + "$" if not seq[-1:] == "$" else seq # add sentinel letter which is unique and lexicographically smaller than any other character
-        self.suffixes = []  # contains resulting suffix array index positions of sequence symbols
-        self.stage = 1  # number of affected suffix symbols
-        self.debug = debug  # enable debug mode for additional printing
+        self.suffixes = []
+        self.stage = 1
+        self.debug = debug
 
     def _create_bucket(self, suffix_pos: List, seq:str=None, stage:int=None) -> DefaultDict:
         """
