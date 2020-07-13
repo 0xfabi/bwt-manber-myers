@@ -12,10 +12,31 @@ class BwtManberMyers():
         :param stage: number of affected suffix symbols
         :param debug: add additional output informations for debugging
         """
-        self.seq = seq + "$" if not seq[-1:] == "$" else seq # add sentinel letter which is unique and lexicographically smaller than any other character
+
+
+        self.seq = self._validate_input_sequence(seq)
         self.suffixes = []
         self.stage = 1
         self.debug = debug
+
+    def _validate_input_sequence(self, seq:str) -> str:
+        """
+        Internal helper function.
+        Validate input sequence by adding missing sentinal letter if required.
+        Sentinal letter must appear at last position of input sequence or is added otherwise.
+
+        :param seq: input sequence
+        :raises ValueError: throw exception if sentinal letter appears not at last position
+        :return: sequence containing sentinal letter at last position
+        """
+        if not "$" in seq:
+            # add sentinal letter which is unique and lexicographically smaller than any other character
+            return seq + "$"
+        else:
+            if seq[-1:] == "$" and seq.count("$") == 1:
+                return seq
+            else:
+                raise ValueError("Input sequence sequence may only contain the sentinal letter '$' in the last position.")         
 
     def _create_bucket(self, suffix_pos: List, seq:str=None, stage:int=None) -> DefaultDict:
         """
