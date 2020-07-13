@@ -29,11 +29,14 @@ class BwtManberMyers():
         """
         if not "$" in seq:
             # add sentinal letter which is unique and lexicographically smaller than any other character
+            if self.debug: print(f"Sentinal letter is added to input sequence: {seq + '$'}")
             return seq + "$"
         else:
             if seq[-1:] == "$" and seq.count("$") == 1:
+                if self.debug: print(f"Input sequnce ({seq}) already contains sentinal letter at last position.")
                 return seq
             else:
+                if self.debug: print(f"Sentinal letter at wrong position: {seq}")
                 raise ValueError("Input sequence sequence may only contain the sentinal letter '$' in the last position.")         
 
     def _create_bucket(self, suffix_pos: List, seq:str=None, stage:int=None) -> DefaultDict:
